@@ -1372,15 +1372,6 @@ function handleImageUpload(file, callback){
   reader.readAsDataURL(file);
 }
 
-/* ── SERVICE WORKER (PWA offline support) ── */
-if('serviceWorker' in navigator){
-  var sw = 'data:application/javascript,' + encodeURIComponent(
-    'self.addEventListener("install",function(e){e.waitUntil(caches.open("fv-v1").then(function(c){return c.addAll(["/"]);}).catch(function(){}));});' +
-    'self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).catch(function(){return caches.match("/");});}).catch(function(){return caches.match("/");}));});'
-  );
-  navigator.serviceWorker.register(sw).catch(function(){});
-}
-
 /* ── PAGINATION ── */
 var projPage = 1, projPerPage = 6;
 function renderProjPaged(list){
@@ -1553,4 +1544,3 @@ document.addEventListener('DOMContentLoaded', function(){
   if(!LS.g('withdrawals', null)) LS.s('withdrawals', []);
 
 });
-
