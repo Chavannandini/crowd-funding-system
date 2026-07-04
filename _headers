@@ -3,8 +3,8 @@
   X-Frame-Options: DENY
   Cache-Control: public, max-age=3600
 
-/js/*.js
+/*.js
   Cache-Control: public, max-age=86400
 
-/css/*.css
+/*.css
   Cache-Control: public, max-age=86400
