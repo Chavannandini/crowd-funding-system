@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020818">
+  <meta name="description" content="FundVerse Pro - India's #1 UPI Crowdfunding Platform">
+  <meta name="keywords" content="crowdfunding, UPI, India, fundraising, PhonePe, GPay">
+  <meta property="og:title" content="FundVerse Pro - UPI Crowdfunding">
+  <meta property="og:description" content="India-first crowdfunding platform with UPI payments.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>FundVerse Pro - INR Crowdfunding</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="bg3d"></canvas>
+
+<!-- PWA Install Bar -->
+<div id="pwa-bar">
+  <span>&#128241; Add FundVerse to your home screen for app-like experience!</span>
+  <div style="display:flex;gap:6px">
+    <button id="pwa-install" style="padding:4px 10px;background:rgba(0,245,255,.12);border:1px solid rgba(0,245,255,.3);color:#00f5ff;border-radius:5px;cursor:pointer;font-size:.68rem;font-family:'Exo 2',sans-serif">Install</button>
+    <button id="pwa-dismiss" style="padding:4px 8px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#7eb8d4;border-radius:5px;cursor:pointer;font-size:.68rem;font-family:'Exo 2',sans-serif">&#10005;</button>
+  </div>
+</div>
+
+<div id="FV">
+
+<!-- AUTH -->
+<div id="auth">
+  <div class="abox">
+    <div class="alo">&#9889; FundVerse Pro</div>
+    <div class="asb">India UPI Crowdfunding &#8226; 100% Secure &#8226; All in &#8377;</div>
+    <div class="sec-badge">&#128274; SHA-256 Password Hashing &#8226; Secure Session</div>
+    <div class="atabs" style="margin-top:10px">
+      <button class="atb on" id="atl">Sign In</button>
+      <button class="atb" id="atr">Register</button>
+    </div>
+    <div id="afl" class="afc">
+      <div class="af"><label>Email</label><input id="lem" type="email" placeholder="admin@fv.io" autocomplete="email"/></div>
+      <div class="af">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input id="lpw" type="password" placeholder="Your password" autocomplete="current-password"/>
+          <button class="eye-btn" id="eye-l" type="button">
+            <svg id="eye-l-svg" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="aerr" id="le"></div>
+      <button class="apb" id="loginbtn">&#128274; SECURE SIGN IN</button>
+      <div style="text-align:center;margin-top:6px">
+        <span style="font-size:.68rem;color:#7eb8d4;cursor:pointer;text-decoration:underline" id="forgot-pw">Forgot password?</span>
+      </div>
+      <div class="dh">Admin: <b style="color:#ffd700">admin@fv.io / admin123</b><br>Backer: <b style="color:#00f5ff">backer@fv.io / backer123</b></div>
+    </div>
+    <div id="afr" class="afc" style="display:none">
+      <div class="af"><label>Full Name</label><input id="rnm" placeholder="Your full name" autocomplete="name"/></div>
+      <div class="af"><label>Email</label><input id="rem" type="email" placeholder="you@example.com" autocomplete="email"/></div>
+      <div class="af"><label>Mobile (for OTP)</label><input id="rmob" type="tel" placeholder="+91 9999999999"/></div>
+      <div class="af"><label>UPI ID</label><input id="rup" placeholder="yourname@okicici"/></div>
+      <div class="af"><label>Aadhaar Last 4 (KYC)</label><input id="rkyc" type="number" placeholder="XXXX" maxlength="4"/></div>
+      <div class="af">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input id="rpw" type="password" placeholder="Min 8 chars" autocomplete="new-password"/>
+          <button class="eye-btn" id="eye-r" type="button">
+            <svg id="eye-r-svg" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="strength-bar" id="str-bar"></div>
+        <div class="strength-txt" id="str-txt"></div>
+      </div>
+      <div class="af"><label>Role</label>
+        <div class="rpk">
+          <button class="rb on" id="rbb">&#128100; Backer</button>
+          <button class="rb" id="rba">&#128737; Admin</button>
+        </div>
+      </div>
+      <div class="aerr" id="re"></div>
+      <button class="apb" id="regbtn">&#9989; CREATE VERIFIED ACCOUNT</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS PANEL -->
+<div id="notif-panel">
+  <div class="np-head">
+    <span>&#128276; Notifications</span>
+    <span class="np-clr" id="clr-notif">Clear all</span>
+  </div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- SOCIAL SHARE MODAL -->
+<div id="share-modal">
+  <div class="smodal" style="max-width:380px;max-height:88vh;overflow-y:auto">
+    <div class="smodal-title">&#128279; Share This Project</div>
+    <div id="share-preview" style="background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.15);border-radius:10px;padding:9px 11px;margin-bottom:12px;display:flex;gap:9px;align-items:center">
+      <div id="share-preview-ico" style="width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:white;flex-shrink:0">P</div>
+      <div style="min-width:0;flex:1">
+        <div id="share-preview-title" style="font-size:.78rem;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+        <div id="share-preview-sub" style="font-size:.65rem;color:#7eb8d4;margin-top:1px"></div>
+      </div>
+    </div>
+    <button class="copy-link" id="sh-native" style="background:linear-gradient(135deg,#00f5ff,#bf00ff);color:#020818;font-weight:700;display:none;align-items:center;justify-content:center;gap:6px;margin-bottom:10px">
+      &#128241; Share via&hellip;
+    </button>
+    <div class="share-grid">
+      <button class="share-btn" id="sh-wa" style="background:#25d366;color:white">&#128241;<span>WhatsApp</span></button>
+      <button class="share-btn" id="sh-tw" style="background:#000000;color:white">&#10006;<span>X / Twitter</span></button>
+      <button class="share-btn" id="sh-fb" style="background:#1877f2;color:white">&#128100;<span>Facebook</span></button>
+      <button class="share-btn" id="sh-tg" style="background:#0088cc;color:white">&#128225;<span>Telegram</span></button>
+      <button class="share-btn" id="sh-li" style="background:#0a66c2;color:white">&#128188;<span>LinkedIn</span></button>
+      <button class="share-btn" id="sh-em" style="background:rgba(0,245,255,.1);color:#00f5ff;border:1px solid rgba(0,245,255,.25)">&#128231;<span>Email</span></button>
+      <button class="share-btn" id="sh-sms" style="background:rgba(0,255,136,.1);color:#00ff88;border:1px solid rgba(0,255,136,.25)">&#128172;<span>SMS</span></button>
+      <button class="share-btn" id="sh-reddit" style="background:#ff4500;color:white">&#128169;<span>Reddit</span></button>
+      <button class="share-btn" id="sh-pin" style="background:#bd081c;color:white">&#128204;<span>Pinterest</span></button>
+      <button class="share-btn" id="sh-tumblr" style="background:#36465d;color:white">&#128013;<span>Tumblr</span></button>
+      <button class="share-btn" id="sh-skype" style="background:#00aff0;color:white">&#9742;<span>Skype</span></button>
+      <button class="share-btn" id="sh-line" style="background:#00c300;color:white">&#128241;<span>LINE</span></button>
+    </div>
+    <button class="copy-link" id="sh-copy">&#128203; Copy Project Link</button>
+    <button class="copy-link" id="sh-copy-text" style="margin-top:6px">&#128203; Copy Full Message</button>
+    <button class="ppgh" id="sh-close" style="margin-top:8px">Close</button>
+  </div>
+</div>
+
+<!-- ADD BANK ACCOUNT MODAL -->
+<div id="addbank-modal" style="position:fixed;inset:0;z-index:310;background:rgba(2,8,24,.85);display:none;align-items:center;justify-content:center;padding:14px">
+  <div class="smodal" style="max-width:380px;max-height:88vh;overflow-y:auto">
+    <div class="smodal-title">&#127974; Add Bank Account</div>
+    <div style="font-size:.7rem;color:#7eb8d4;margin-bottom:10px">Link a new bank account to pay via UPI. Choose your bank and enter account details &#8212; we'll verify and generate your UPI handle.</div>
+
+    <div class="af" style="margin-bottom:9px">
+      <label>Select Bank</label>
+      <input id="ab-bank-search" placeholder="Search bank name (e.g. HDFC, SBI, Axis)..." style="margin-bottom:6px"/>
+      <div id="ab-bank-results" style="max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+
+    <div id="ab-selected-bank" style="display:none;background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.2);border-radius:8px;padding:8px 10px;margin-bottom:10px;align-items:center;gap:9px">
+      <div id="ab-sel-logo" class="bank-logo" style="width:28px;height:28px;font-size:.6rem"></div>
+      <div style="flex:1">
+        <div id="ab-sel-name" style="font-size:.78rem;font-weight:700;color:white"></div>
+        <div id="ab-sel-type" style="font-size:.62rem;color:#7eb8d4"></div>
+      </div>
+      <button id="ab-change-bank" style="background:none;border:none;color:#ff8c00;font-size:.68rem;cursor:pointer;text-decoration:underline">Change</button>
+    </div>
+
+    <div class="af" style="margin-bottom:8px">
+      <label>Account Holder Name</label>
+      <input id="ab-holder" placeholder="As per bank records"/>
+    </div>
+    <div class="af" style="margin-bottom:8px">
+      <label>Account Number</label>
+      <input id="ab-accno" type="text" inputmode="numeric" placeholder="Enter account number" maxlength="18"/>
+    </div>
+    <div class="af" style="margin-bottom:8px">
+      <label>Confirm Account Number</label>
+      <input id="ab-accno2" type="text" inputmode="numeric" placeholder="Re-enter account number" maxlength="18"/>
+    </div>
+    <div class="af" style="margin-bottom:8px">
+      <label>IFSC Code</label>
+      <input id="ab-ifsc" placeholder="e.g. HDFC0001234" maxlength="11" style="text-transform:uppercase"/>
+    </div>
+    <div class="af" style="margin-bottom:10px">
+      <label>Your UPI ID (auto-suggested)</label>
+      <input id="ab-upi" placeholder="yourname@bank" readonly style="color:#00f5ff;background:rgba(0,245,255,.06)"/>
+    </div>
+
+    <div class="aerr" id="ab-err" style="margin-bottom:6px"></div>
+    <button class="apb" id="ab-save">&#9989; Save &amp; Link Bank Account</button>
+    <button class="ppgh" id="ab-cancel" style="margin-top:6px">Cancel</button>
+  </div>
+</div>
+
+<!-- UPI PAYMENT MODAL -->
+<div id="umo">
+  <div class="pps">
+    <div class="pph">
+      <div class="pplo"><div class="ppli">P</div><div><div style="font-size:.88rem;font-weight:900">PhonePe</div><div style="font-size:.58rem;opacity:.5">Secure UPI Payment</div></div></div>
+      <div class="pphr"><div>Paying to</div><div id="ppn">Project</div></div>
+    </div>
+    <div class="ppb">
+      <div class="dots" id="dts"></div>
+      <div class="ppstp on" id="s1">
+        <div class="ppsec">Enter Amount</div>
+        <div class="amw"><span class="rp">&#8377;</span><input type="number" id="pamt" placeholder="0" min="1"/></div>
+        <div class="chips" id="cps"></div>
+        <div style="font-size:.62rem;color:rgba(255,255,255,.28);text-align:center;margin-bottom:4px">Min &#8377;1 &#8226; Max &#8377;1,00,000</div>
+        <div style="font-size:.62rem;color:rgba(0,255,136,.6);text-align:center;margin-bottom:7px">&#128274; Funds held in Escrow until project goal met</div>
+        <button class="ppbtn" id="s1next">Continue</button>
+        <button class="ppgh" id="s1can">Cancel</button>
+      </div>
+      <div class="ppstp" id="s2">
+        <div class="ppsec">Choose Payment Method</div>
+        <div class="mths">
+          <div class="mth" id="mth-qr"><div class="mico" style="background:#5f259f">QR</div><div class="min"><div class="mn">Scan QR Code</div><div class="ms">PhonePe, GPay, Paytm, BHIM</div></div><div style="color:rgba(255,255,255,.3)">&#8250;</div></div>
+          <div class="mth" id="mth-id"><div class="mico" style="background:#1565c0">ID</div><div class="min"><div class="mn">Enter UPI ID</div><div class="ms">Pay using VPA e.g. name@upi</div></div><div style="color:rgba(255,255,255,.3)">&#8250;</div></div>
+          <div class="mth" id="mth-lnk"><div class="mico" style="background:#1b5e20">BK</div><div class="min"><div class="mn">Linked Bank Account</div><div class="ms" id="lsb">Choose from your saved banks</div></div><div style="color:rgba(255,255,255,.3)">&#8250;</div></div>
+        </div>
+        <button class="ppgh" id="s2back">Back</button>
+      </div>
+      <div class="ppstp" id="s3q">
+        <div class="ppsec">Scan to Pay</div>
+        <div style="text-align:center">
+          <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:6px">Open PhonePe / GPay / Paytm and Scan</div>
+          <div class="qrwrap"><canvas id="qr-canvas" width="220" height="220" style="width:180px;height:180px;display:block;border-radius:4px"></canvas></div>
+          <div style="font-size:.64rem;color:rgba(0,255,136,.7);margin:4px 0 6px">&#10003; Real UPI QR &#8212; Scannable by all UPI apps</div>
+          <div style="background:rgba(95,37,159,.15);border:1px solid rgba(95,37,159,.35);border-radius:8px;padding:7px 10px;margin:4px 0;display:flex;align-items:center;justify-content:space-between">
+            <div><div style="font-size:.6rem;color:rgba(255,255,255,.4);margin-bottom:2px">UPI ID</div><span class="uitxt" id="qr-upi-show">8977980147@fam</span></div>
+            <button class="cpb" id="cpub">Copy</button>
+          </div>
+          <div style="font-size:.68rem;color:rgba(255,255,255,.35);margin-top:4px">Amount: <b style="color:#d8a0ff" id="qal">&#8377;0</b></div>
+        </div>
+        <button class="ppbtn" id="s3qdone" style="margin-top:9px">I have Paid &#8212; Enter PIN</button>
+        <button class="ppgh" id="s3qback">Back</button>
+      </div>
+      <div class="ppstp" id="s3i">
+        <div class="ppsec">Enter UPI ID</div>
+        <div class="amw" style="margin:5px 0 3px"><span class="rp" style="font-size:.85rem;color:#d8a0ff">@</span><input type="text" id="uid" placeholder="yourname@okicici" style="padding-left:22px;font-weight:600"/></div>
+        <div id="upi-verify-status" style="font-size:.68rem;margin-bottom:6px"></div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,.38);text-align:center;margin-bottom:7px">Paying <b style="color:#d8a0ff" id="uidamt">&#8377;0</b> to FundVerse</div>
+        <button class="ppbtn" id="s3iverify">Verify UPI ID</button>
+        <button class="ppgh" id="s3iback">Back</button>
+      </div>
+      <div class="ppstp" id="s3l">
+        <div class="ppsec">Choose Linked Bank Account</div>
+        <div class="bank-list" id="bank-list"></div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.35);text-align:center;margin:6px 0">Amount: <b style="color:#d8a0ff" id="lamt">&#8377;0</b></div>
+        <button class="ppbtn" id="s3lgo">Confirm and Enter PIN</button>
+        <button class="ppgh" id="s3lback">Back</button>
+      </div>
+      <div class="ppstp" id="s4">
+        <div style="text-align:center;margin-bottom:7px">
+          <div style="font-size:1.5rem;margin-bottom:3px">&#128272;</div>
+          <div style="font-weight:700;color:white;font-size:.85rem">Enter UPI PIN</div>
+          <div style="font-size:.66rem;color:rgba(255,255,255,.32);margin-top:2px">6-digit PIN (any 6 digits to simulate)</div>
+        </div>
+        <div class="otpw" id="otpw"></div>
+        <div style="text-align:center;font-size:.65rem;color:rgba(255,255,255,.32);margin-top:3px">Resend: <span style="color:#d8a0ff;cursor:pointer;text-decoration:underline" id="resend">Resend OTP</span></div>
+        <button class="ppbtn" style="margin-top:9px" id="s4pay">Verify and Pay</button>
+        <button class="ppgh" id="s4can">Cancel</button>
+      </div>
+      <div class="ppstp" id="s5">
+        <div style="text-align:center;padding:12px 0">
+          <div class="spin"></div>
+          <div style="font-weight:700;color:white;font-size:.84rem;margin-top:3px">Processing Payment</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:3px" id="ptxt">Connecting to bank</div>
+          <div style="display:flex;justify-content:center;gap:4px;margin-top:10px" id="ptks"></div>
+        </div>
+      </div>
+      <div class="ppstp" id="s6">
+        <div style="text-align:center;padding:8px 0">
+          <div style="font-size:1.4rem;margin-bottom:3px">&#127881;</div>
+          <div class="sring"><span style="font-size:1.5rem;color:#020818;font-weight:900">&#10003;</span></div>
+          <div style="font-size:.88rem;color:#00ff88;letter-spacing:1.5px;margin-bottom:3px;font-weight:700">PAYMENT SUCCESSFUL</div>
+          <div style="font-size:1.4rem;color:white;font-weight:900;margin:5px 0" id="suca">&#8377;0</div>
+          <div style="font-size:.68rem;color:rgba(255,255,255,.38);line-height:1.9;margin-bottom:6px" id="sucm"></div>
+          <div class="txb2" id="suct"></div>
+          <div class="gst-box" id="gst-box"></div>
+          <button class="ppbtn" id="sdone" style="margin-top:8px">Done</button>
+          <button class="ppgh" id="req-refund" style="margin-top:4px;color:#ff4466;border-color:rgba(255,68,102,.3)">Request Refund</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="fnav">
+  <div class="flogo">&#9889; FundVerse</div>
+  <button class="nb on" id="nb0">Dashboard</button>
+  <button class="nb" id="nb1">Projects</button>
+  <button class="nb" id="nb2" style="display:none">Launch</button>
+  <button class="nb" id="nb-admin" style="display:none">Admin Panel</button>
+  <button class="nb" id="nb3">Analytics</button>
+  <button class="nb" id="nb4">Backers</button>
+  <button class="nb" id="nb5">Profile</button>
+  <button id="theme-btn" style="background:none;border:1px solid rgba(0,245,255,.2);color:#7eb8d4;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:.85rem;transition:all .2s" title="Toggle theme">&#9790;</button>
+  <button class="nbell" id="notif-btn">&#128276;<span class="nbadge" id="nbadge" style="display:none">0</span></button>
+  <div class="upill" id="upl" style="display:none">
+    <div class="uav" id="nav_av"></div>
+    <span class="unm" id="nav_nm"></span>
+    <button class="ulb" id="logoutbtn">Sign Out</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div id="pg-dash" class="pg on">
+  <div id="dash-hero">
+    <canvas id="globe-canvas"></canvas>
+    <div id="dash-hero-text">
+      <div id="dash-title">FUNDVERSE PRO</div>
+      <div id="dash-sub">India&#8217;s Most Secure UPI Crowdfunding Platform</div>
+      <div id="dash-badges">
+        <span class="dbadge">&#127470;&#127475; INR</span>
+        <span class="dbadge">&#9889; UPI Live</span>
+        <span class="dbadge">&#128274; Escrow Protected</span>
+        <span class="dbadge">&#9989; KYC Verified</span>
+      </div>
+    </div>
+  </div>
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-ico">&#128269;</span>
+      <input id="dash-search" placeholder="Search projects, categories, creators..."/>
+    </div>
+  </div>
+  <div id="stat3d-grid">
+    <div class="s3card" id="s3c0">
+      <div class="s3icon">&#128176;</div>
+      <div class="s3val" id="sv0">&#8377;0</div>
+      <div class="s3lbl">Total Raised</div>
+      <div class="s3bar"><div class="s3bfill" id="sb0"></div></div>
+      <canvas class="s3spark" id="sp0" width="120" height="32"></canvas>
+    </div>
+    <div class="s3card" id="s3c1">
+      <div class="s3icon">&#128640;</div>
+      <div class="s3val" id="sv1">0</div>
+      <div class="s3lbl">Active Projects</div>
+      <div class="s3bar"><div class="s3bfill" id="sb1" style="background:linear-gradient(90deg,#bf00ff,#ff4466)"></div></div>
+      <canvas class="s3spark" id="sp1" width="120" height="32"></canvas>
+    </div>
+    <div class="s3card" id="s3c2">
+      <div class="s3icon">&#128101;</div>
+      <div class="s3val" id="sv2">0</div>
+      <div class="s3lbl">Total Backers</div>
+      <div class="s3bar"><div class="s3bfill" id="sb2" style="background:linear-gradient(90deg,#00ff88,#00f5ff)"></div></div>
+      <canvas class="s3spark" id="sp2" width="120" height="32"></canvas>
+    </div>
+    <div class="s3card" id="s3c3">
+      <div class="s3icon">&#128200;</div>
+      <div class="s3val" id="sv3">0%</div>
+      <div class="s3lbl">Success Rate</div>
+      <div class="s3bar"><div class="s3bfill" id="sb3" style="background:linear-gradient(90deg,#ffd700,#ff8c00)"></div></div>
+      <canvas class="s3spark" id="sp3" width="120" height="32"></canvas>
+    </div>
+  </div>
+  <div id="dash-charts">
+    <div class="dchart-card"><div class="dchart-title">&#128202; Funding Progress</div><canvas id="chart-funding" height="160"></canvas></div>
+    <div class="dchart-card"><div class="dchart-title">&#127775; Category Breakdown</div><canvas id="chart-cat" height="160"></canvas></div>
+    <div class="dchart-card"><div class="dchart-title">&#128293; Funding Trend (14 days)</div><canvas id="chart-trend" height="160"></canvas></div>
+  </div>
+  <div class="stit">&#128293; Trending Projects</div>
+  <div class="pg2" id="tg"></div>
+</div>
+
+<!-- PROJECTS -->
+<div id="pg-proj" class="pg">
+  <div class="filt">
+    <div class="stit" style="margin:0">All Projects</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <select id="fcat"><option value="">All Categories</option><option>Technology</option><option>Art</option><option>Health</option><option>Education</option></select>
+      <select id="fsrt"><option value="new">Newest</option><option value="fund">Most Funded</option><option value="end">Ending Soon</option><option value="goal">Near Goal</option></select>
+    </div>
+  </div>
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-ico">&#128269;</span>
+      <input id="proj-search" placeholder="Search projects..."/>
+    </div>
+  </div>
+  <div class="pg2" id="ag"></div>
+  <!-- PROJECT DETAIL / COMMENTS -->
+  <div id="proj-detail" style="display:none;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <button id="back-to-proj" style="background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.2);color:#00f5ff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.74rem;font-family:'Exo 2',sans-serif">&#8592; Back</button>
+      <div class="stit" style="margin:0" id="detail-title">Project Details</div>
+    </div>
+
+    <!-- MILESTONE TRACKER -->
+    <div style="background:rgba(5,15,40,.9);border:1px solid rgba(0,245,255,.18);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="stit" style="font-size:.72rem;margin-bottom:10px">&#9868; Milestone Tracker</div>
+      <div id="detail-milestones"></div>
+    </div>
+
+    <!-- PROJECT UPDATES (creator posts) -->
+    <div style="background:rgba(5,15,40,.9);border:1px solid rgba(0,245,255,.18);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div class="stit" style="font-size:.72rem;margin-bottom:10px">&#128227; Project Updates</div>
+      <div id="update-feed"></div>
+      <div id="post-update-area" style="display:none;margin-top:10px">
+        <textarea id="update-text" placeholder="Post an update to your backers..." style="width:100%;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.18);color:#e8f4ff;padding:8px 10px;border-radius:7px;font-size:.8rem;outline:none;resize:vertical;min-height:60px;font-family:'Exo 2',sans-serif"></textarea>
+        <button id="post-update-btn" style="margin-top:6px;padding:7px 16px;background:linear-gradient(135deg,#00f5ff,#bf00ff);border:none;color:#020818;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.7rem;border-radius:7px;cursor:pointer">POST UPDATE</button>
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div style="background:rgba(5,15,40,.9);border:1px solid rgba(0,245,255,.18);border-radius:12px;padding:14px">
+      <div class="stit" style="font-size:.72rem;margin-bottom:10px">&#128172; Backer Comments <span id="comment-count" style="color:#7eb8d4;font-family:'Exo 2',sans-serif;font-weight:400"></span></div>
+      <div id="comments-feed"></div>
+      <div id="comment-input-area" style="margin-top:10px">
+        <div style="display:flex;gap:8px">
+          <input id="comment-text" placeholder="Ask a question or leave a comment..." style="flex:1;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.18);color:#e8f4ff;padding:7px 10px;border-radius:7px;font-size:.8rem;outline:none;font-family:'Exo 2',sans-serif"/>
+          <button id="post-comment-btn" style="padding:7px 14px;background:linear-gradient(135deg,#00f5ff,#bf00ff);border:none;color:#020818;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.7rem;border-radius:7px;cursor:pointer">POST</button>
+        </div>
+        <div style="font-size:.62rem;color:#7eb8d4;margin-top:4px">&#128737; All comments are moderated. Spam or abuse will be removed.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH -->
+<div id="pg-launch" class="pg">
+  <div class="stit">Launch a New Project</div>
+  <div class="escrow-info">&#128274; <b>Escrow Protection:</b> All funds are held securely until your milestone goals are met. Backers can request refunds if targets are not achieved within the deadline.</div>
+  <div class="fcard">
+    <div class="fgrd">
+      <div class="fg fw"><label>Project Title</label><input id="ft" placeholder="Enter project name..."/></div>
+      <div class="fg"><label>Category</label><select id="fcat2"><option>Technology</option><option>Art</option><option>Health</option><option>Education</option></select></div>
+      <div class="fg"><label>Funding Goal (&#8377;)</label><input id="fgl" type="number" placeholder="500000" min="1000"/></div>
+      <div class="fg"><label>Creator Name</label><input id="fcr" placeholder="Your name..."/></div>
+      <div class="fg"><label>Duration (days)</label><input id="fdy" type="number" placeholder="30" min="1" max="90"/></div>
+      <div class="fg"><label>Platform Fee (2.5%)</label><input id="fee-display" readonly style="color:#ffd700"/></div>
+      <div class="fg fw"><label>Description</label><textarea id="fds" placeholder="Describe your project, goals, and impact..."></textarea></div>
+      <div class="fg fw"><label>Milestone 1 (25% goal)</label><input id="ms1" placeholder="e.g. Prototype complete"/></div>
+      <div class="fg fw"><label>Milestone 2 (50% goal)</label><input id="ms2" placeholder="e.g. Beta testing done"/></div>
+      <div class="fg fw"><label>Milestone 3 (100% goal)</label><input id="ms3" placeholder="e.g. Full launch"/></div>
+    </div>
+    <div class="gst-box" style="margin-top:8px">&#128203; GST Note: Platform collects 18% GST on the 2.5% platform fee. Your GST invoice will be auto-generated after launch.</div>
+    <button class="sbtn" id="launchbtn">&#128640; LAUNCH PROJECT</button>
+  </div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="pg-ana" class="pg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;flex-wrap:wrap;gap:7px">
+    <div class="stit" style="margin:0">Platform Analytics</div>
+    <div class="er" style="margin:0">
+      <button class="eb" id="csvbtn">&#8595; CSV</button>
+      <button class="eb" id="sqlbtn">&#8595; SQL</button>
+      <button class="eb" id="gstbtn" style="color:#ffd700;border-color:rgba(255,215,0,.25)">&#128203; GST Report</button>
+    </div>
+  </div>
+  <div class="cr">
+    <div class="cc"><div class="ct">Funding by Category (&#8377;)</div><div id="cc"></div></div>
+    <div class="cc"><div class="ct">Project Status</div><div style="display:flex;align-items:center;gap:10px"><canvas id="dc" width="90" height="90"></canvas><div id="dl" style="flex:1"></div></div></div>
+  </div>
+  <div class="stit">UPI Transaction Ledger</div>
+  <div class="tw"><table><thead><tr><th>UPI Ref</th><th>Project</th><th>Backer</th><th>Amount</th><th>Fee (2.5%)</th><th>GST</th><th>Date</th><th>Status</th></tr></thead><tbody id="txb"></tbody></table></div>
+</div>
+
+<!-- BACKERS -->
+<div id="pg-bak" class="pg">
+  <div class="stit">Backer Directory</div>
+  <div class="tw"><table><thead><tr><th>Backer</th><th>KYC</th><th>Projects</th><th>Total (&#8377;)</th><th>Joined</th><th>Tier</th></tr></thead><tbody id="bkb"></tbody></table></div>
+</div>
+
+<!-- PROFILE -->
+<div id="pg-prf" class="pg">
+  <div class="stit">My Profile</div>
+  <div class="pgr">
+    <div class="pcd2">
+      <div class="pcd" style="border:none;padding:0">
+        <div class="pav" id="pav-big"></div>
+        <div class="pnm" id="pnm-big"></div>
+        <div style="margin-bottom:9px" id="prole-badge"></div>
+        <div id="pstats"></div>
+      </div>
+      <!-- CHANGE PASSWORD -->
+      <div style="margin-top:12px;border-top:1px solid rgba(0,245,255,.1);padding-top:10px">
+        <div class="stit" style="font-size:.72rem;margin-bottom:8px">Change Password</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <input id="old-pw" type="password" placeholder="Current password" style="background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.15);color:#e8f4ff;padding:6px 9px;border-radius:6px;font-size:.76rem;outline:none;font-family:'Exo 2',sans-serif"/>
+          <input id="new-pw" type="password" placeholder="New password (min 8 chars)" style="background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.15);color:#e8f4ff;padding:6px 9px;border-radius:6px;font-size:.76rem;outline:none;font-family:'Exo 2',sans-serif"/>
+          <button id="chpw-btn" style="padding:7px;background:linear-gradient(135deg,#00f5ff,#bf00ff);border:none;color:#020818;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.68rem;border-radius:6px;cursor:pointer">UPDATE PASSWORD</button>
+        </div>
+        <div class="aerr" id="pw-err" style="margin-top:4px"></div>
+        <div class="aok" id="pw-ok" style="margin-top:4px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="stit">My Backing History</div>
+      <div class="tw"><table><thead><tr><th>Project</th><th>Amount</th><th>UPI Ref</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="mhb"></tbody></table></div>
+      <div class="stit" style="margin-top:12px">My Wishlist</div>
+      <div class="pg2" id="wishlist-grid"></div>
+    </div>
+  </div>
+</div>
+
+
+<div id="pg-admin" class="pg">
+  <div class="stit">&#128737; Admin Control Panel</div>
+
+  <!-- FRAUD DETECTION -->
+  <div style="background:rgba(255,68,102,.06);border:1px solid rgba(255,68,102,.2);border-radius:12px;padding:14px;margin-bottom:14px">
+    <div style="font-family:'Orbitron',sans-serif;font-size:.78rem;color:#ff4466;margin-bottom:10px;letter-spacing:1.5px">&#128270; Fraud Detection System</div>
+    <div id="fraud-alerts"></div>
+  </div>
+
+  <!-- PROJECT APPROVAL -->
+  <div class="stit">&#9989; Project Approval Queue</div>
+  <div class="tw"><table><thead><tr><th>Project</th><th>Creator</th><th>Goal</th><th>KYC</th><th>Status</th><th>Action</th></tr></thead><tbody id="approval-queue"></tbody></table></div>
+
+  <!-- WITHDRAWAL REQUESTS -->
+  <div class="stit" style="margin-top:12px">&#128176; Withdrawal Requests</div>
+  <div class="tw"><table><thead><tr><th>Creator</th><th>Project</th><th>Amount</th><th>UPI</th><th>Raised</th><th>Action</th></tr></thead><tbody id="withdrawal-queue"></tbody></table></div>
+
+  <!-- PLATFORM STATS -->
+  <div class="stit" style="margin-top:12px">&#128202; Platform Revenue</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="revenue-stats"></div>
+</div>
+
+
+<!-- 2FA MODAL -->
+<div id="twofa-modal" style="position:fixed;inset:0;z-index:400;background:rgba(2,8,24,.92);display:none;align-items:center;justify-content:center">
+  <div style="background:rgba(5,15,40,.98);border:1px solid rgba(0,245,255,.25);border-radius:16px;padding:22px;width:320px;max-width:92%">
+    <div style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:#00f5ff;margin-bottom:12px;letter-spacing:1.5px">&#128272; Two-Factor Authentication</div>
+    <div id="twofa-content"></div>
+    <button id="twofa-close" style="width:100%;padding:7px;background:transparent;border:1px solid rgba(0,245,255,.2);color:#7eb8d4;border-radius:7px;cursor:pointer;margin-top:8px;font-family:'Exo 2',sans-serif">Close</button>
+  </div>
+</div>
+
+<!-- CAPTCHA CHECK -->
+<div id="captcha-modal" style="position:fixed;inset:0;z-index:500;background:rgba(2,8,24,.95);display:none;align-items:center;justify-content:center">
+  <div style="background:rgba(5,15,40,.98);border:1px solid rgba(0,245,255,.25);border-radius:16px;padding:22px;width:300px;text-align:center">
+    <div style="font-size:1.5rem;margin-bottom:8px">&#129302;</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:.82rem;color:#00f5ff;margin-bottom:8px">Security Check</div>
+    <div style="font-size:.78rem;color:#7eb8d4;margin-bottom:12px">Please solve: <b id="captcha-q" style="color:#ffd700"></b></div>
+    <input id="captcha-ans" type="number" placeholder="Your answer" style="width:100%;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.18);color:#e8f4ff;padding:8px;border-radius:7px;font-size:.9rem;outline:none;text-align:center;font-family:'Exo 2',sans-serif"/>
+    <button id="captcha-submit" style="width:100%;margin-top:8px;padding:9px;background:linear-gradient(135deg,#00f5ff,#bf00ff);border:none;color:#020818;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.74rem;border-radius:8px;cursor:pointer">VERIFY &#10003;</button>
+    <div class="aerr" id="captcha-err" style="margin-top:6px"></div>
+  </div>
+</div>
+<div id="tst"></div>
+</div>
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <!-- QR Code Generator (Kazuhiko Arase, MIT License - embedded locally, no network needed) -->
+  <script src="js/qrcode.js"></script>
+  <!-- Main App -->
+  <script src="js/app.js"></script>
+</body>
+</html>
